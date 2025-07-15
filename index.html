@@ -37,17 +37,21 @@
       border-radius: 8px;
     }
     .result {
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       font-weight: bold;
-      color: #0078D4;
-      font-size: 1.2rem;
+      color: #005a9e;
+      font-size: 1.1rem;
+      padding: 1rem;
+      background-color: #e3f2fd;
+      border-radius: 8px;
+      display: inline-block;
+      text-align: left;
     }
     footer {
       background-color: #004578;
       color: white;
       padding: 1rem;
       font-size: 0.9rem;
-      position: relative;
     }
     .github-link {
       margin-top: 0.5rem;
@@ -55,7 +59,6 @@
       color: #fff;
       text-decoration: underline;
     }
-
     @media (max-width: 600px) {
       header h1 {
         font-size: 1.5rem;
@@ -107,27 +110,38 @@
         return;
       }
 
-      resultBox.textContent = "Analyzing...";
+      resultBox.textContent = "Analyzing... Please wait.";
+
       const predictionKey = "1f4BnGbuqu6AlX8lTrTpVXReK4yH8qwlMX4DhYHoFBtOikxKUQVyJQQJ99BGACGhslBXJ3w3AAAIACOG2NlD";
       const endpoint = "https://steffundusapp-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/128a7fd0-1984-4b86-b933-9bc8af9d6a9a/classify/iterations/Iteration1/image";
-      //const predictionKey = "BDGFlDXTaBqh06Fxp0VZkDapz17TqCWdhim56L9ZEjo15cIV7iYuJQQJ99BGACGhslBXJ3w3AAAJACOGEZUE";
-      //const endpoint = "https://steffundusapp-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/128a7fd0-1984-4b86-b933-9bc8af9d6a9a/classify/iterations/Iteration1/image";
-      //https://steffundusapp-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/128a7fd0-1984-4b86-b933-9bc8af9d6a9a/classify/iterations/Iteration1/image
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/octet-stream",
-          "Prediction-Key": predictionKey
-        },
-        body: file
-      });
 
-      const data = await response.json();
-      if (data.predictions && data.predictions.length > 0) {
-        const topPrediction = data.predictions[0];
-        resultBox.textContent = `Result: ${topPrediction.tagName} (${(topPrediction.probability * 100).toFixed(2)}%)`;
-      } else {
-        resultBox.textContent = "No results found.";
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/octet-stream",
+            "Prediction-Key": predictionKey
+          },
+          body: file
+        });
+
+        const data = await response.json();
+
+        if (data.predictions && data.predictions.length > 0) {
+          const topResults = data.predictions.slice(0, 3);
+          let output = "<strong>AI Analysis Result:</strong><br><ul>";
+          topResults.forEach(prediction => {
+            const confidence = (prediction.probability * 100).toFixed(2);
+            output += `<li><strong>${prediction.tagName}</strong> detected with <strong>${confidence}%</strong> confidence.</li>`;
+          });
+          output += "</ul><p>The model has analyzed the fundus image using Azure AI. Please consult a medical professional for diagnosis confirmation.</p>";
+          resultBox.innerHTML = output;
+        } else {
+          resultBox.innerHTML = "No findings detected. Please try another image.";
+        }
+      } catch (error) {
+        console.error("Error during prediction:", error);
+        resultBox.innerHTML = "An error occurred while analyzing the image. Please try again.";
       }
     }
   </script>
