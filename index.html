@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shah Retinal Care - AI Microaneurysm Detection</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: linear-gradient(to right, #f8f9fa, #e0f7fa);
+      color: #333;
+      text-align: center;
+    }
+    header {
+      background-color: #0078D4;
+      color: white;
+      padding: 1rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    header p {
+      margin: 0.2rem 0 0;
+    }
+    main {
+      padding: 2rem 1rem;
+    }
+    input[type="file"], input[type="button"] {
+      margin: 1rem auto;
+      display: block;
+    }
+    img {
+      max-width: 90%;
+      margin: 1rem auto;
+      border-radius: 8px;
+    }
+    .result {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #0078D4;
+      font-size: 1.2rem;
+    }
+    footer {
+      background-color: #004578;
+      color: white;
+      padding: 1rem;
+      font-size: 0.9rem;
+      position: relative;
+    }
+    .github-link {
+      margin-top: 0.5rem;
+      display: block;
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Shah Retinal Care</h1>
+    <p><strong>SITER Project</strong> – AI Model for Automated Microaneurysms Detection</p>
+  </header>
+
+  <main>
+    <p><strong>Upload or Capture Fundus Image</strong></p>
+    <input type="file" id="imageInput" accept="image/*" capture="environment">
+    <img id="preview" src="#" alt="Image Preview" style="display:none;" />
+    <input type="button" value="Detect Microaneurysms" onclick="analyzeImage()">
+    <div class="result" id="result"></div>
+  </main>
+
+  <footer>
+    Created by Mr. Shahul Hameed Chettali and Mrs. S. Steffi<br>
+    Vel Tech Rangarajan Dr.Sagunthala R&D Institute of Science and Technology<br>
+    <a href="https://github.com/YourGitHubUsername/Shah-Retinal-Care" target="_blank" class="github-link">Source Code on GitHub</a>
+  </footer>
+
+  <script>
+    const imageInput = document.getElementById("imageInput");
+    const preview = document.getElementById("preview");
+    const resultBox = document.getElementById("result");
+
+    imageInput.onchange = function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.src = e.target.result;
+          preview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
+    async function analyzeImage() {
+      const file = imageInput.files[0];
+      if (!file) {
+        alert("Please upload or capture an image.");
+        return;
+      }
+
+      resultBox.textContent = "Analyzing...";
+
+      const predictionKey = "YOUR_PREDICTION_KEY";
+      const endpoint = "https://YOUR_CUSTOM_VISION_ENDPOINT/customvision/v3.0/Prediction/YOUR_PROJECT_ID/classify/iterations/YOUR_ITERATION_NAME/image";
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/octet-stream",
+          "Prediction-Key": predictionKey
+        },
+        body: file
+      });
+
+      const data = await response.json();
+      if (data.predictions && data.predictions.length > 0) {
+        const topPrediction = data.predictions[0];
+        resultBox.textContent = `Result: ${topPrediction.tagName} (${(topPrediction.probability * 100).toFixed(2)}%)`;
+      } else {
+        resultBox.textContent = "No results found.";
+      }
+    }
+  </script>
+</body>
+</html>
