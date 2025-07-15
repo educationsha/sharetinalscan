@@ -80,7 +80,7 @@
   <footer>
     Created by Mr. Shahul Hameed Chettali and Mrs. S. Steffi<br>
     Vel Tech Rangarajan Dr.Sagunthala R&D Institute of Science and Technology<br>
-    <a href="https://github.com/YourGitHubUsername/Shah-Retinal-Care" target="_blank" class="github-link">Source Code on GitHub</a>
+    <a href="https://github.com/educationsha/Shah-Retinal-Care" target="_blank" class="github-link">Source Code on GitHub</a>
   </footer>
 
   <script>
@@ -109,9 +109,9 @@
 
       resultBox.textContent = "Analyzing...";
 
-      const predictionKey = "YOUR_PREDICTION_KEY";
-      const endpoint = "https://YOUR_CUSTOM_VISION_ENDPOINT/customvision/v3.0/Prediction/YOUR_PROJECT_ID/classify/iterations/YOUR_ITERATION_NAME/image";
-
+      const predictionKey = "BDGFlDXTaBqh06Fxp0VZkDapz17TqCWdhim56L9ZEjo15cIV7iYuJQQJ99BGACGhslBXJ3w3AAAJACOGEZUE";
+      const endpoint = "https://steffundusapp-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/128a7fd0-1984-4b86-b933-9bc8af9d6a9a/classify/iterations/Iteration1/image";
+      //https://steffundusapp-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/128a7fd0-1984-4b86-b933-9bc8af9d6a9a/classify/iterations/Iteration1/image
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
