@@ -108,9 +108,10 @@
       }
 
       resultBox.textContent = "Analyzing...";
-
-      const predictionKey = "BDGFlDXTaBqh06Fxp0VZkDapz17TqCWdhim56L9ZEjo15cIV7iYuJQQJ99BGACGhslBXJ3w3AAAJACOGEZUE";
+      const predictionKey = "1f4BnGbuqu6AlX8lTrTpVXReK4yH8qwlMX4DhYHoFBtOikxKUQVyJQQJ99BGACGhslBXJ3w3AAAIACOG2NlD";
       const endpoint = "https://steffundusapp-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/128a7fd0-1984-4b86-b933-9bc8af9d6a9a/classify/iterations/Iteration1/image";
+      //const predictionKey = "BDGFlDXTaBqh06Fxp0VZkDapz17TqCWdhim56L9ZEjo15cIV7iYuJQQJ99BGACGhslBXJ3w3AAAJACOGEZUE";
+      //const endpoint = "https://steffundusapp-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/128a7fd0-1984-4b86-b933-9bc8af9d6a9a/classify/iterations/Iteration1/image";
       //https://steffundusapp-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/128a7fd0-1984-4b86-b933-9bc8af9d6a9a/classify/iterations/Iteration1/image
       const response = await fetch(endpoint, {
         method: "POST",
